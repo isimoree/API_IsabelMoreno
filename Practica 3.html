@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html> 
+
+<head>
+    <title>Practica API+</title>
+    <style>   
+        div.center {text-align: center;}
+    </style>
+
+</head>
+<script>
+    
+    if (window.File && window.FileReader && window.FileList) {
+        console.log('Todas las APIs soportadas');
+    }else {
+        alert(' La API de FILE no es soportada en este navegador.');
+    }
+
+    function handlefileselect(evt) {
+    var files = evt.target.files;
+    for(var i=0, f; f=files[i]; i++){
+        if(!f.type.match('video.*')){
+            continue;
+        }
+
+    var reader = new FileReader();
+    reader.onload = (function (theFile) {
+        return function (e) {
+            var span =document.createElement('span');
+            span.innerHTML = ['<video id = "myvideo" class="thumb" src="', e.target.result,
+            '"title="',escape (theFile.name),'"/>'].join('');
+            document.getElementById('video').replaceWith(span);
+            alert("El video se está cargando")
+            document.getElementById("boton1").style.visibility= "visible";
+            document.getElementById("boton2").style.visibility= "visible";
+            document.getElementById("boton3").style.visibility= "visible";
+            document.getElementById("boton4").style.visibility= "visible";
+        };
+    })(f);
+    reader.readAsDataURL(f);
+    }
+}
+
+document.getElementById('files').addEventListener('change',handlefileselect,false);
+
+
+
+
+    
+</script>
+
+<body>
+    <h3>Carga de Fichero  </h3>
+    <input type="file" name="files[]" id="files" accept=".webm,.mp4,.ogv"  multiple onchange="handlefileselect(event)"/>
+    <div class="center"><output video id="video"></output>
+    </div>
+
+
+    <div class="center" > 
+            <button style="visibility:hidden" id="boton1" onclick="document.getElementById('myvideo').play()">Reproducir</button>
+            <button style="visibility:hidden" id="boton2" onclick="document.getElementById('myvideo').pause();">Pausa</button>
+            <button style="visibility:hidden" id="boton3" onclick="document.getElementById('myvideo').volume += 0.1;">Subir Volumen</button>
+            <button style="visibility:hidden" id="boton4" onclick="document.getElementById('myvideo').volume -= 0.1;">Bajar Volumen</button>
+    </div>
+</body>
+
+</html>
